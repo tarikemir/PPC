@@ -1,4 +1,4 @@
-﻿namespace YetDit.Application.Exceptions
+﻿namespace PPC.Application.Exceptions
 {
     public class NotFoundUserException : Exception
     {
