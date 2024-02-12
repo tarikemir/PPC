@@ -2,12 +2,17 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PPC.Domain.Identity;
 
-namespace YetDit.Persistence.Configurations.Identity
+namespace PPC.Persistence.Configurations.Identity
 {
     public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
     {
         public void Configure(EntityTypeBuilder<AppUser> builder)
         {
+            // Configure one-to-many relationship between AppUser and Link
+            builder.HasMany(u => u.Links)
+                   .WithOne()
+                   .HasForeignKey(link => link.UserId); // Assuming you have a UserId property in Link class to represent the foreign key
+
             // Primary key
             builder.HasKey(u => u.Id);
 
@@ -15,8 +20,7 @@ namespace YetDit.Persistence.Configurations.Identity
             builder.HasIndex(u => u.NormalizedUserName).HasDatabaseName("UserNameIndex").IsUnique();
             builder.HasIndex(u => u.NormalizedEmail).HasDatabaseName("EmailIndex");
 
-            // Maps to the AspNetUsers table
-
+            // One to Many Relationship
 
             // A concurrency token for use with the optimistic concurrency checking
             builder.Property(u => u.ConcurrencyStamp).IsConcurrencyToken();

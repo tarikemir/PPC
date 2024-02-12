@@ -39,7 +39,7 @@ namespace PPC.Persistence.Services.AuthServices
             if (result.Succeeded)
             {
                 Token token = _tokenHandler.CreateAccessToken(accessTokenLifeTime, appUser);
-                await _userService.UpdateRefreshToken(token.RefreshToken, appUser, token.Expiration, 40);
+                await _userService.UpdateRefreshToken(token.RefreshToken, appUser, token.Expiration.DateTime, 40);
                 await _userManager.AddClaimAsync(appUser, new("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", appUser.UserName!));
 
                 return token;
@@ -55,7 +55,7 @@ namespace PPC.Persistence.Services.AuthServices
             if (appUser is not null && appUser.RefreshTokenEndDate > DateTime.UtcNow)
             {
                 Token token = _tokenHandler.CreateAccessToken(15, appUser);
-                await _userService.UpdateRefreshToken(token.RefreshToken, appUser, token.Expiration, 10);
+                await _userService.UpdateRefreshToken(token.RefreshToken, appUser, token.Expiration.DateTime, 10);
                 return token;
             }
             throw new AuthenticationErrorException();

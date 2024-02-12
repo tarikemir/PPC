@@ -1,23 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using YetDit.Domain.Entities;
+using PPC.Domain.Entities;
 
-namespace YetDit.Persistence.Configurations.Identity
+namespace PPC.Persistence.Configurations.Identity
 {
-    public class PostConfiguration : IEntityTypeConfiguration<Post>
+    public class LinkConfiguration : IEntityTypeConfiguration<Link>
     {
-        public void Configure(EntityTypeBuilder<Post> builder)
+        public void Configure(EntityTypeBuilder<Link> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
-            builder.Property(x => x.Title).IsRequired().HasMaxLength(255);
-            builder.Property(x => x.Description).IsRequired().HasMaxLength(255);
-            builder.Property(x => x.UpVoteCount).HasDefaultValue(0);
-
-            builder.HasOne(x => x.User)
-                .WithMany(x => x.Posts)
-                .HasForeignKey(x => x.UserId);
+            builder.Property(x => x.OriginalUrl).IsRequired().HasMaxLength(255);
+            builder.Property(x => x.ShortenedUrl).IsRequired().HasMaxLength(255);
+            builder.Property(x => x.ClickCount).HasDefaultValue(0);
 
             // Common Fields
 

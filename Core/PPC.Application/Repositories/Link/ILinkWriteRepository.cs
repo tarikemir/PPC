@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PPC.Application.Repositories.Link
 {
-    public interface ILinkWriteRepository : IReadRepository<PPC.Domain.Entities.Link, Guid>
+    public interface ILinkWriteRepository : IWriteRepository<PPC.Domain.Entities.Link, Guid>
     {
     }
 }
