@@ -10,7 +10,7 @@ namespace PPC.Domain.Identity
         public string Name { get; set; }
         public string Surname { get; set; }
         public Gender Gender { get; set; }
-        public string? ProfilePictureUrl { get; set; }
+        public byte[]? ProfilePicture { get; set; }
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenEndDate { get; set; }
 
@@ -22,6 +22,7 @@ namespace PPC.Domain.Identity
         public DateTimeOffset? DeletedOn { get; set; }
         public bool IsDeleted { get; set; }
 
-        public ICollection<Link> Links { get; set; }
+        public Wallet Wallet { get; set; }
+        public ICollection<Link>? Links { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PPC.Domain.Entities;
 using PPC.Domain.Identity;
 
 namespace PPC.Persistence.Configurations.Identity
@@ -12,6 +13,11 @@ namespace PPC.Persistence.Configurations.Identity
             builder.HasMany(u => u.Links)
                    .WithOne()
                    .HasForeignKey(link => link.UserId); // Assuming you have a UserId property in Link class to represent the foreign key
+                                                        
+            // Configure one-to-one relationship between AppUser and Wallet
+            builder.HasOne(u => u.Wallet)
+                   .WithOne(w => w.User)
+                   .HasForeignKey<Wallet>(w => w.UserId);
 
             // Primary key
             builder.HasKey(u => u.Id);
@@ -43,7 +49,7 @@ namespace PPC.Persistence.Configurations.Identity
             builder.Property(x => x.Gender).IsRequired();
             builder.Property(x => x.Gender).HasConversion<int>();
 
-            builder.Property(x => x.ProfilePictureUrl).IsRequired(false);
+            builder.Property(x => x.ProfilePicture).IsRequired(false);
 
             // CreatedByUserId
             builder.Property(x => x.CreatedByUserId).IsRequired();

@@ -15,7 +15,8 @@ namespace PPC.Persistence
     {
         public static void AddPersistenceServices(this IServiceCollection services)
         {
-            services.AddDbContext<PPCDbContext>(options => options.UseNpgsql(Configuration.ConnectionString));
+            services.AddDbContext<PPCDbContext>(options => options.UseInMemoryDatabase("PPCDatabase"));
+            //services.AddDbContext<PPCDbContext>(options => options.UseNpgsql(Configuration.ConnectionString));
 
             services.AddIdentity<AppUser, AppRole>(options =>
             {
