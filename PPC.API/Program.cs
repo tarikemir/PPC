@@ -16,7 +16,7 @@ builder.Services.AddCors(options => { options.AddPolicy("AllowAll", builder => b
 
 builder.Services.AddPersistenceServices();
 builder.Services.AddInfrastructureServices();
-//builder.Services.AddApplicationServices();
+builder.Services.AddApplicationServices();
 
 builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>())
     .AddFluentValidation(configuration =>

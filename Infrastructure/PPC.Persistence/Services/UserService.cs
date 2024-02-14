@@ -27,7 +27,7 @@ namespace PPC.Persistence.Services
                 Surname = model.Surname,
                 UserName = model.Username,
                 Email = model.Email,
-                ProfilePictureUrl = model.ProfilePictureUrl,
+                ProfilePicture = model.ProfilePicture,
                 CreatedByUserId = guid.ToString()
             }, model.Password);
 
