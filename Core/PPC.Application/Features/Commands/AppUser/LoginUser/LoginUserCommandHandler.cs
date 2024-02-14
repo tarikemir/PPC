@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using PPC.Application.Abstractions.Services.Authentications;
+using PPC.Application.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,11 @@ namespace PPC.Application.Features.Commands.AppUser.LoginUser
             _authentication = authentication;
         }
 
-        public async Task<LoginUserCommandResponse> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken) =>
-            new() { Token = await _authentication.LoginAsync(request.Email, request.Password, 160) };
-
+        public async Task<LoginUserCommandResponse> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken)
+        {
+            LoginUserCommandResponse response = new LoginUserCommandResponse();
+            response.Token = await _authentication.LoginAsync(request.Email, request.Password, 160);
+            return response;
+        }
     }
 }
