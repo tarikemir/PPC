@@ -1,4 +1,5 @@
-﻿using PPC.Application.Repositories;
+﻿using PPC.Application.Abstractions.Services;
+using PPC.Application.Repositories;
 using PPC.Application.Repositories.Link;
 using System;
 using System.Collections.Generic;
@@ -11,15 +12,19 @@ namespace PPC.Application.Features.Queries.Link.GetUserLinks
     public class GetUserLinksQueryHandler
     {
         private readonly ILinkReadRepository _linkReadRepository;
+        private readonly IUserService _userService;
 
-        public GetUserLinksQueryHandler(ILinkReadRepository linkReadRepository)
+        public GetUserLinksQueryHandler(ILinkReadRepository linkReadRepository, IUserService userService)
         {
             _linkReadRepository = linkReadRepository;
+            _userService = userService;
         }
 
-        public Task<GetUserLinksQueryResponse> Handle(GetUserLinksQueryRequest request, CancellationToken cancellationToken)
+        public async Task<GetUserLinksQueryResponse> Handle(GetUserLinksQueryRequest request, CancellationToken cancellationToken)
         {
-            var links = _linkReadRepository.GetWhere(c => c.UserId == request.UserId && c.IsDeleted == false).Select(c => new
+            Guid userId = await _userService.GetIdFromClaim(request.Claim!);
+
+            var links = _linkReadRepository.GetWhere(c => c.UserId == userId && c.IsDeleted == false).Select(c => new
             {
                 c.Id,
                 c.OriginalUrl,
@@ -30,7 +35,7 @@ namespace PPC.Application.Features.Queries.Link.GetUserLinks
                 c.ModifiedOn
             }).Skip(request.Page * request.Size).Take(request.Size);
 
-            return Task.FromResult<GetUserLinksQueryResponse>(new()
+            return await Task.FromResult<GetUserLinksQueryResponse>(new()
             {
                 Links = links,
                 TotalCount = links.Count()
